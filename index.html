@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp Floating</title>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      .wa-floating {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        font-family: Arial, sans-serif;
+      }
+
+      /* WhatsApp Icon */
+      .wa-icon {
+        width: 60px;
+        height: 60px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        animation:
+          float 2.4s ease-in-out infinite,
+          pulse 2s infinite;
+        transition: transform 0.25s ease;
+      }
+
+      .wa-icon:hover {
+        transform: scale(1.15);
+      }
+
+      /* Chat Box */
+      .wa-box {
+        width: 260px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        position: absolute;
+        bottom: 80px;
+        right: 0;
+        opacity: 0;
+        transform: translateY(20px);
+        pointer-events: none;
+        transition: all 0.35s ease;
+      }
+
+      .wa-floating.active .wa-box {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .wa-header {
+        background: #25d366;
+        color: #fff;
+        padding: 12px;
+        border-radius: 14px 14px 0 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .wa-status {
+        width: 10px;
+        height: 10px;
+        background: #00ff6a;
+        border-radius: 50%;
+        animation: blink 1.2s infinite;
+      }
+
+      .wa-title {
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .wa-subtitle {
+        font-size: 12px;
+        opacity: 0.9;
+      }
+
+      .wa-close {
+        margin-left: auto;
+        cursor: pointer;
+        font-size: 18px;
+      }
+
+      .wa-body {
+        padding: 15px;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .wa-button {
+        display: block;
+        background: #25d366;
+        color: #fff;
+        text-align: center;
+        padding: 12px;
+        border-radius: 0 0 14px 14px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(8px);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+        }
+        70% {
+          box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+        }
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wa-floating" id="waFloating">
+      <div class="wa-box">
+        <div class="wa-header">
+          <div class="wa-status"></div>
+          <div>
+            <div class="wa-title">Customer Support</div>
+            <div class="wa-subtitle">Online</div>
+          </div>
+          <span class="wa-close" id="waClose"></span>
+        </div>
+
+        <div class="wa-body">
+          Halo 👋<br />
+          Ada yang bisa kami bantu hari ini?
+        </div>
+
+        <a class="wa-button" id="waButton" target="_blank">
+          Chat via WhatsApp
+        </a>
+      </div>
+
+      <!-- ICON = LINK -->
+      <a class="wa-icon" id="waIcon" target="_blank">
+        <i data-lucide="message-circle"></i>
+      </a>
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      const wa = document.getElementById('waFloating');
+      const waIcon = document.getElementById('waIcon');
+      const waClose = document.getElementById('waClose');
+      const waButton = document.getElementById('waButton');
+
+      const phone = '6281384072641';
+      const text = encodeURIComponent(
+        'Halo Admin \nSaya ingin konsultasi produk & jasa.',
+      );
+      const waURL = `https://wa.me/${phone}?text=${text}`;
+
+      const isTouchDevice =
+        'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+      /* Assign link hanya untuk button dalam box */
+      waButton.href = waURL;
+
+      /* Desktop: icon langsung ke WA */
+      if (!isTouchDevice) {
+        waIcon.href = waURL;
+
+        wa.addEventListener('mouseenter', () => {
+          wa.classList.add('active');
+        });
+
+        wa.addEventListener('mouseleave', () => {
+          wa.classList.remove('active');
+        });
+      }
+
+      /* Mobile: icon hanya toggle box */
+      if (isTouchDevice) {
+        waIcon.removeAttribute('href'); // disable link
+
+        waIcon.addEventListener('click', function (e) {
+          e.preventDefault();
+          wa.classList.toggle('active');
+        });
+      }
+
+      /* Close button */
+      waClose.addEventListener('click', function () {
+        wa.classList.remove('active');
+      });
+
+      /* Auto open */
+      setTimeout(() => {
+        wa.classList.add('active');
+      }, 5000);
+    </script>
+  </body>
+</html>
