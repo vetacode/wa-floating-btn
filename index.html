@@ -147,7 +147,7 @@
 
   <body>
     <div class="wa-floating" id="waFloating">
-      <div class="wa-box" id="waBox">
+      <div class="wa-box">
         <div class="wa-header">
           <div class="wa-status"></div>
           <div>
@@ -177,52 +177,55 @@
       lucide.createIcons();
 
       const wa = document.getElementById('waFloating');
-      const waB = document.getElementById('waBox');
+
       const waIcon = document.getElementById('waIcon');
       const waClose = document.getElementById('waClose');
       const waButton = document.getElementById('waButton');
 
       const phone = '6281384072641';
       const text = encodeURIComponent(
-        'Halo Admin \nSaya ingin konsultasi produk & jasa CariSolusi',
+        'Halo Admin 👋\nSaya ingin konsultasi produk & jasa CariSolusi',
       );
       const waURL = `https://wa.me/${phone}?text=${text}`;
+
+      waButton.href = waURL;
 
       const isTouchDevice =
         'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-      /* Assign link hanya untuk button dalam box */
-      waButton.href = waURL;
-
-      /* Desktop: icon langsung ke WA */
+      /* =========================
+   DESKTOP: HOVER BEHAVIOR
+========================= */
       if (!isTouchDevice) {
         waIcon.href = waURL;
 
-        wa.addEventListener('mouseenter', () => {
+        waIcon.addEventListener('mouseenter', () => {
           wa.classList.add('active');
         });
 
         wa.addEventListener('mouseleave', () => {
-          waB.classList.remove('active');
+          wa.classList.remove('active');
         });
       }
 
-      /* Mobile: icon hanya toggle box */
+      /* =========================
+   MOBILE: CLICK BEHAVIOR
+========================= */
       if (isTouchDevice) {
-        waIcon.removeAttribute('href'); // disable link
+        waIcon.removeAttribute('href');
 
-        waIcon.addEventListener('click', function (e) {
+        waIcon.addEventListener('click', (e) => {
           e.preventDefault();
           wa.classList.toggle('active');
         });
       }
 
       /* Close button */
-      waClose.addEventListener('click', function () {
+      waClose.addEventListener('click', () => {
         wa.classList.remove('active');
       });
 
-      /* Auto open */
+      /* Auto open (lead booster) */
       setTimeout(() => {
         wa.classList.add('active');
       }, 5000);
