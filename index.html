@@ -147,7 +147,7 @@
 
   <body>
     <div class="wa-floating" id="waFloating">
-      <div class="wa-box">
+      <div class="wa-box" id="waBox">
         <div class="wa-header">
           <div class="wa-status"></div>
           <div>
@@ -177,6 +177,7 @@
       lucide.createIcons();
 
       const wa = document.getElementById('waFloating');
+      const waB = document.getElementById('waBox');
       const waIcon = document.getElementById('waIcon');
       const waClose = document.getElementById('waClose');
       const waButton = document.getElementById('waButton');
@@ -202,7 +203,7 @@
         });
 
         wa.addEventListener('mouseleave', () => {
-          wa.classList.remove('active');
+          waB.classList.remove('active');
         });
       }
 
